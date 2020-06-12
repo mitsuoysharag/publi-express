@@ -49,7 +49,7 @@
 
     <p
       class="login__nota"
-    >Nota: Los datos proporcionados son confidenciales y para uso exclusivo de ...</p>
+    >Nota: Los datos proporcionados son confidenciales y para uso exclusivo de Publi Express.</p>
   </section>
 </template>
 

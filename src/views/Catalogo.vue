@@ -161,8 +161,8 @@ export default {
   &__descripcion {
     padding: 20px;
     background: $color-secondary;
-    // background: #131313;
-    // border-left: 2px solid $color-secondary;
+    // background: #1c2a2a;
+    // border-left: 4px solid $color-secondary;
     font-size: 0.85rem;
     text-align: center;
     font-weight: bold;
