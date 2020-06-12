@@ -1,5 +1,5 @@
 <template>
-  <section class="cotizacion container">
+  <v-container class="cotizacion">
     <div class="row no-gutters" style="align-items: center">
       <div class="cotizacion__img col-md-4">
         <img src="@/assets/producto.jpeg" alt />
@@ -44,7 +44,6 @@
                 </td>
                 <td v-if="impresion !== 'no'">
                   <v-select :items="lados_arr" v-model="lados" dark dense hide-details></v-select>
-                  <v-icon>mdi-image</v-icon>
                 </td>
               </tr>
             </tbody>
@@ -122,7 +121,7 @@
         </div>
       </section>
     </div>
-  </section>
+  </v-container>
 </template>
 
 <script>
@@ -223,8 +222,8 @@ export default {
     },
     sendMessage() {
       let api = "https://api.whatsapp.com";
-      // let phone = "51991615223";
-      let phone = "51955525493";
+      let phone = "51991615223";
+      // let phone = "51955525493";
       let text = `
       Buen dia, me llamo *${this.usuario.nombre} (Persona ${
         this.usuario.persona === "natural" ? "Natural" : "Jurídica"
@@ -279,7 +278,7 @@ export default {
   color: #fff;
 
   &__img {
-    padding: 20px;
+    padding: 20px !important;
     height: min-content;
     img {
       margin: 0 auto;
@@ -295,7 +294,7 @@ export default {
   }
 
   &__detalle {
-    padding: 10px;
+    padding: 10px !important;
   }
 
   &__titulo {
@@ -320,12 +319,6 @@ export default {
   padding: 12px;
   background: #ffffff15;
   text-align: center;
-
-  // display: grid;
-  // grid-template-columns: repeat(5, 1fr);
-  // column-gap: 10px;
-  // row-gap: 6px;
-  // align-items: center;
 }
 
 .factura {
