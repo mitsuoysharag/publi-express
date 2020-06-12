@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{'dark': night_mode}">
+  <div class="app" :class="{'dark': night_mode}" data-app>
     <!-- <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>-->
     <Header />
@@ -48,6 +48,39 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+// Input Radio
+.checkmark {
+  flex-shrink: 0;
+  position: relative;
+  height: 16px;
+  width: 16px;
+  margin-right: 8px;
+
+  background-color: #fff;
+  border-radius: 50%;
+
+  &::after {
+    content: "";
+  }
+}
+
+input[type="radio"] {
+  display: none;
+
+  &:checked ~ .checkmark {
+    &::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      height: 10px;
+      width: 10px;
+      background: $color-secondary;
+      border-radius: 50%;
+    }
   }
 }
 </style>

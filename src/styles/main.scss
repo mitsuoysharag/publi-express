@@ -10,7 +10,7 @@ body, body * {
   font-family: Lato, Arial, Helvetica, sans-serif;
 }
 
-input[type='text'] {
+.m-input {
   width: 100%;
   padding: 6px 12px;
   background: transparent;
@@ -60,3 +60,37 @@ button {
     outline: none;
   }
 }
+
+table {
+  width: 100%;
+
+  th, td {
+      width: 1%;
+  }
+}
+
+
+// // Medium devices (tablets, 768px and up)
+// @media (max-width: 1200px) {
+//   html {
+
+//   }
+// }
+// // Medium devices (tablets, 768px and up)
+// @media (max-width: 992px) {
+//   html {
+
+//   }
+// }
+// // Medium devices (tablets, 768px and up)
+// @media (max-width: 768px) {
+//   html, * {
+//     font-size: 12px;
+//   }
+// }
+// // Small devices (landscape phones, 576px and up)
+// @media (max-width: 576px) {
+//   html {
+//     font-size: 75%
+//   }
+// }

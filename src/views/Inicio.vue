@@ -19,6 +19,7 @@
       </div>
 
       <input
+        class="m-input"
         type="text"
         name="nombre"
         :placeholder="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
@@ -26,6 +27,7 @@
         v-model.trim="nombre"
       />
       <input
+        class="m-input"
         type="text"
         name="telefono"
         placeholder="Teléfono / Celular"
@@ -33,6 +35,7 @@
         v-model.trim="telefono"
       />
       <input
+        class="m-input"
         type="text"
         name="correo"
         placeholder="Correo Electrónico"
@@ -217,38 +220,5 @@ export default {
   font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
-}
-
-// Input Radio
-.checkmark {
-  flex-shrink: 0;
-  position: relative;
-  height: 16px;
-  width: 16px;
-  margin-right: 8px;
-
-  background-color: #fff;
-  border-radius: 50%;
-
-  &::after {
-    content: "";
-  }
-}
-
-input[type="radio"] {
-  display: none;
-
-  &:checked ~ .checkmark {
-    &::after {
-      content: "";
-      position: absolute;
-      left: 3px;
-      top: 3px;
-      height: 10px;
-      width: 10px;
-      background: $color-secondary;
-      border-radius: 50%;
-    }
-  }
 }
 </style>

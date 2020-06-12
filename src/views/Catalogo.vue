@@ -14,10 +14,23 @@
     </div>
 
     <section class="catalogo">
-      <section class="producto" v-for="(producto, idx) in productos_filtrados" :key="idx">
-        <div class="producto__descripcion">{{producto.descripcion}}</div>
+      <section
+        class="producto"
+        v-for="(producto, idx) in productos_filtrados"
+        :key="idx"
+        @click="seleccionar(producto)"
+      >
+        <div class="producto__descripcion">
+          <span class="producto__id">{{producto.id}}</span>
+          <span
+            class="producto__medidas"
+          >{{`${producto.ancho} x ${producto.base} x ${producto.alto}`}}</span>
+        </div>
         <div class="producto__img">
-          <img :src="producto.img" alt />
+          <img
+            src="https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg"
+            alt
+          />
         </div>
       </section>
     </section>
@@ -25,89 +38,21 @@
 </template>
 
 <script>
+import productos_sin_asa from "@/data/productos_sin_asa.json";
+import productos_con_asa from "@/data/productos_con_asa.json";
+
 export default {
   data: () => ({
-    tipo: "con-asa",
-    productos: [
-      // Con Asa
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg",
-        tipo: "con-asa"
-      },
-      // Sin Asa
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      },
-      {
-        descripcion: "RP-01M - 14cm x 8cm x 20cm",
-        img:
-          "https://www.iberbag.com/wp-content/uploads/2016/05/bolsa_americana_kraft_VERJURADO_10x6x22medidas.jpg",
-        tipo: "sin-asa"
-      }
-    ]
+    tipo: "con-asa"
   }),
   computed: {
     productos_filtrados() {
-      return this.productos.filter(producto => producto.tipo === this.tipo);
+      return this.tipo === "con-asa" ? productos_con_asa : productos_sin_asa;
+    }
+  },
+  methods: {
+    seleccionar(producto) {
+      this.$router.push({ name: "cotizacion", params: { id: producto.id } });
     }
   }
 };
@@ -151,7 +96,6 @@ export default {
   border-radius: 8px;
   transition: all 0.3s;
   cursor: pointer;
-
   display: flex;
 
   &:hover {
@@ -159,6 +103,7 @@ export default {
   }
 
   &__descripcion {
+    flex-grow: 1;
     padding: 20px;
     background: $color-secondary;
     // background: #1c2a2a;
@@ -168,7 +113,12 @@ export default {
     font-weight: bold;
 
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &__medidas {
+    margin-top: 10px;
+    font-size: 0.75rem;
   }
   &__img {
     img {

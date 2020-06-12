@@ -4,7 +4,7 @@ import Inicio from '../views/Inicio.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'inicio',
@@ -14,6 +14,11 @@ Vue.use(VueRouter)
     path: '/catalogo',
     name: 'catalogo',
     component: () => import('../views/Catalogo.vue')
+  },
+  {
+    path: '/cotizacion/:id',
+    name: 'cotizacion',
+    component: () => import('../views/Cotizacion.vue')
   }
 ]
 
