@@ -1,7 +1,7 @@
 <template>
   <section class="login">
     <h1 class="login__title">Cotizador Online</h1>
-    <Alert v-model="show_error">Complete el formulario</Alert>
+    <Alert v-model="show_error" style="margin-bottom: 20px">Complete el formulario</Alert>
     <p class="login__message">Identifícate</p>
 
     <form class="form" action="/catalogo" @submit="checkForm">
@@ -120,8 +120,19 @@ export default {
         this.telefono &&
         this.correo &&
         this.distrito
-      )
+      ) {
+        localStorage.setItem(
+          "usuario",
+          JSON.stringify({
+            persona: this.persona,
+            nombre: this.nombre,
+            telefono: this.telefono,
+            correo: this.correo,
+            distrito: this.distrito
+          })
+        );
         return true;
+      }
 
       this.show_error = true;
 
@@ -146,11 +157,10 @@ export default {
 .login {
   max-width: 400px;
   padding: 20px;
-  // border: 1px solid #ccc;
   text-align: center;
 
   &__title {
-    margin-top: 0;
+    margin-bottom: 20px;
     padding: 12px 24px;
     background: $color-secondary;
     color: #fff;
@@ -159,6 +169,7 @@ export default {
   }
 
   &__message {
+    margin-bottom: 20px;
     color: #cf1e46;
     font-weight: bold;
     font-size: 1.1rem;
