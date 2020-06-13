@@ -4,7 +4,7 @@
     <Alert v-model="show_error" style="margin-bottom: 20px">Complete el formulario</Alert>
     <p class="login__message">Identifícate</p>
 
-    <form class="form" action="/catalogo" @submit="checkForm">
+    <form class="form" @submit.prevent="checkForm">
       <div class="form__persona">
         <label>
           <input type="radio" name="persona" value="natural" v-model="persona" />
@@ -114,7 +114,7 @@ export default {
     ]
   }),
   methods: {
-    checkForm(e) {
+    checkForm() {
       this.show_error = false;
 
       if (
@@ -124,17 +124,15 @@ export default {
         this.correo &&
         this.distrito
       ) {
-        localStorage.setItem(
-          "usuario",
-          JSON.stringify({
-            persona: this.persona,
-            nombre: this.nombre,
-            telefono: this.telefono,
-            correo: this.correo,
-            distrito: this.distrito
-          })
-        );
-        return true;
+        this.$store.commit("setUsuario", {
+          persona: this.persona,
+          nombre: this.nombre,
+          telefono: this.telefono,
+          correo: this.correo,
+          distrito: this.distrito
+        });
+        this.$router.push({ name: "catalogo" });
+        return;
       }
 
       this.show_error = true;
@@ -144,8 +142,6 @@ export default {
       // if (!this.telefono) this.errors.push("");
       // if (!this.correo) this.errors.push("");
       // if (!this.distrito) this.errors.push("");
-
-      e.preventDefault();
     }
   },
   components: {

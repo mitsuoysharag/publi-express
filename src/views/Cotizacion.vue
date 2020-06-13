@@ -1,5 +1,10 @@
 <template>
   <v-container class="cotizacion">
+    <div class="cotizacion__volver">
+      <v-btn icon dark @click="volver()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+    </div>
     <div class="row no-gutters" style="align-items: center">
       <div class="cotizacion__img col-md-4">
         <img src="@/assets/producto.jpeg" alt />
@@ -121,6 +126,13 @@
         </div>
       </section>
     </div>
+
+    <!-- DIALOG -->
+    <!-- <v-dialog>
+      <v-card>
+
+      </v-card>
+    </v-dialog> -->
   </v-container>
 </template>
 
@@ -130,7 +142,6 @@ import productos_con_asa from "@/data/productos_con_asa.json";
 
 export default {
   data: () => ({
-    usuario: {},
     producto: {},
     productos: [],
     //
@@ -152,8 +163,6 @@ export default {
     ]
   }),
   created() {
-    this.usuario = JSON.parse(localStorage.getItem("usuario") || {});
-
     productos_sin_asa.forEach(p => (p.tipo = "sin-asa"));
     productos_con_asa.forEach(p => (p.tipo = "con-asa"));
     this.productos = productos_sin_asa.concat(productos_con_asa);
@@ -162,6 +171,9 @@ export default {
     );
   },
   computed: {
+    usuario() {
+      return this.$store.state.usuario || {};
+    },
     subtotal() {
       let subtotal = Number(this.producto[this.cantidad]);
       if (this.impresion !== "no")
@@ -200,6 +212,9 @@ export default {
     }
   },
   methods: {
+    volver() {
+      this.$router.push({ name: "catalogo" });
+    },
     formatDate(d, year = true) {
       let months = [
         "Enero",
@@ -277,6 +292,11 @@ export default {
   padding: 0;
   color: #fff;
 
+  &__volver {
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
   &__img {
     padding: 20px !important;
     height: min-content;
@@ -308,7 +328,7 @@ export default {
   &__acciones {
     margin-top: 30px;
     .btn {
-      margin-right: 20px;
+      margin-right: 10px;
     }
   }
 }
@@ -351,11 +371,12 @@ label {
 
 .btn {
   width: max-content;
-  padding: 8px 16px;
+  padding: 8px 12px;
   background: $color-secondary;
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
+  border-radius: 20px;
   transition: background-color 0.3s;
 
   &:hover {
