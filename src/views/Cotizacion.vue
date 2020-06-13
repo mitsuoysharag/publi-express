@@ -6,8 +6,13 @@
       </v-btn>
     </div>
     <div class="row no-gutters" style="align-items: center">
-      <div class="cotizacion__img col-md-4">
-        <img src="@/assets/producto.jpeg" alt />
+      <div class="col-md-4">
+        <div class="cotizacion__img">
+          <img src="@/assets/producto.jpeg" alt="Producto" />
+          <div class="overlay">
+            <img v-if="img" :src="img" alt="Imagen" />
+          </div>
+        </div>
       </div>
       <section class="cotizacion__detalle col-md-8">
         <!-- Bienvenida -->
@@ -26,7 +31,7 @@
           <table>
             <thead>
               <tr>
-                <th>Tipo de Bolsa</th>
+                <th>Bolsa</th>
                 <th>Gramaje</th>
                 <th>Cantidad</th>
                 <th>Impresión</th>
@@ -49,6 +54,16 @@
                 </td>
                 <td v-if="impresion !== 'no'">
                   <v-select :items="lados_arr" v-model="lados" dark dense hide-details></v-select>
+                </td>
+                <td v-if="impresion !== 'no'">
+                  <v-icon style="cursor: pointer" dark onclick="iptFile.click()">mdi-image</v-icon>
+                  <input
+                    style="display: none"
+                    onclick="this.value = null"
+                    @change="onFileChange"
+                    type="file"
+                    id="iptFile"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -121,18 +136,22 @@
 
         <!-- Acciones -->
         <div class="cotizacion__acciones">
-          <button class="btn">Comprar Ya</button>
+          <button class="btn" @click="dlg_comprar = true">Comprar Ya</button>
           <button class="btn" @click="sendMessage()">Comprar por Whatsapp</button>
         </div>
       </section>
     </div>
 
     <!-- DIALOG -->
-    <!-- <v-dialog>
-      <v-card>
-
+    <v-dialog v-model="dlg_comprar" max-width="560">
+      <v-card class="comprar">
+        <v-card-title></v-card-title>
+        <v-card-text>Aún no tenemos disponible ésta función. Sin embargo, nuestros vendedores pueden atenderle por Whatsapp.</v-card-text>
+        <v-card-actions class="comprar__acciones">
+          <button class="btn" @click="dlg_comprar = false; sendMessage()">Comprar por Whatsapp</button>
+        </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>
   </v-container>
 </template>
 
@@ -144,6 +163,7 @@ export default {
   data: () => ({
     producto: {},
     productos: [],
+    img: "",
     //
     factura: false,
     cantidad: "100",
@@ -160,7 +180,8 @@ export default {
       { value: "no", text: "Recojo en tienda" },
       { value: "gratis", text: "Envío Gratuito" },
       { value: "express", text: "Express" }
-    ]
+    ],
+    dlg_comprar: false
   }),
   created() {
     productos_sin_asa.forEach(p => (p.tipo = "sin-asa"));
@@ -212,6 +233,14 @@ export default {
     }
   },
   methods: {
+    onFileChange(e) {
+      let file = e.target.files[0];
+      let fr = new FileReader();
+      fr.readAsDataURL(file);
+      fr.onload = () => {
+        this.img = fr.result;
+      };
+    },
     volver() {
       this.$router.push({ name: "catalogo" });
     },
@@ -298,13 +327,28 @@ export default {
   }
 
   &__img {
-    padding: 20px !important;
+    position: relative;
+    margin: 20px !important;
     height: min-content;
     img {
       margin: 0 auto;
       display: block;
       max-width: 400px;
       width: 100%;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 40%;
+      }
     }
   }
 
@@ -362,6 +406,21 @@ export default {
   align-items: center;
 }
 
+.comprar {
+  & * {
+    font-size: 1.1rem !important;
+  }
+  &__acciones {
+    padding: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    & * {
+      font-size: 0.8rem !important;
+    }
+  }
+}
+
+//
 label {
   margin: 0 12px;
   display: flex;

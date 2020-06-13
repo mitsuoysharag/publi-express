@@ -43,7 +43,14 @@
         v-model.trim="correo"
       />
 
-      <v-select style="width: 100%; margin-top: 12px" name="distrito" :items="distritos" v-model="distrito" dark hide-details></v-select>
+      <v-select
+        style="width: 100%; margin-top: 12px"
+        name="distrito"
+        :items="distritos"
+        v-model="distrito"
+        dark
+        hide-details
+      ></v-select>
 
       <button class="btn-submit">Ingresar</button>
     </form>
@@ -207,12 +214,13 @@ export default {
 
 .btn-submit {
   width: min-content;
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 8px 16px;
   background: $color-secondary;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
+  border-radius: 20px;
 }
 </style>
