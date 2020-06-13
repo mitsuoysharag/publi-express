@@ -43,9 +43,7 @@
         v-model.trim="correo"
       />
 
-      <select name="distrito" v-model="distrito">
-        <option v-for="(distrito, idx) in distritos" :value="distrito" :key="idx">{{distrito}}</option>
-      </select>
+      <v-select style="width: 100%; margin-top: 12px" name="distrito" :items="distritos" v-model="distrito" dark hide-details></v-select>
 
       <button class="btn-submit">Ingresar</button>
     </form>
