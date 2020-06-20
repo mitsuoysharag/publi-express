@@ -8,7 +8,7 @@
     <div class="row no-gutters" style="align-items: center">
       <div class="col-md-4">
         <div class="cotizacion__img">
-          <img src="@/assets/producto.jpeg" alt="Producto" />
+          <img :src="`http://publiexpress.pe/cotizaciones/${producto.id}.jpeg`" :alt='producto.id' />
           <div class="overlay">
             <img v-if="img" :src="img" alt="Imagen" />
           </div>
@@ -63,6 +63,7 @@
                     @change="onFileChange"
                     type="file"
                     id="iptFile"
+                    accept="image/*"
                   />
                 </td>
               </tr>
@@ -103,8 +104,6 @@
           <v-select
             style="margin-top: -4px"
             :items="entrega_arr"
-            item-text="text"
-            item-value="value"
             v-model="entrega"
             dark
             dense
@@ -122,13 +121,17 @@
             hide-details
             autocomplete="off"
           ></v-text-field>
+          <span v-if="entrega === 'no'">Lugar de recojo:</span>
+          <span v-if="entrega === 'no'">Av. Precursores 966, San Miguel</span>
         </section>
 
         <!-- Total -->
         <section class="total">
           <span class="total__item">Subtotal:</span>
           <span>S/. {{subtotal}}</span>
-          <span class="total__item" v-if="factura">IGV:</span>
+          <span v-if="entrega === 'express'" class="total__item">Express:</span>
+          <span v-if="entrega === 'express'">S/. {{precio_entrega}}</span>
+          <span v-if="factura" class="total__item">IGV:</span>
           <span v-if="factura">S/. {{igv}}</span>
           <span class="total__item">Total:</span>
           <span>S/. {{total}}</span>
@@ -158,6 +161,9 @@
 <script>
 import productos_sin_asa from "@/data/productos_sin_asa.json";
 import productos_con_asa from "@/data/productos_con_asa.json";
+import tarifa from "@/data/tarifa.json";
+
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
@@ -174,13 +180,12 @@ export default {
     ruc: "",
     //
     cantidad_arr: ["100", "500", "1000"],
-    impresion_arr: ["no", "1", "2"],
-    lados_arr: ["1", "2"],
-    entrega_arr: [
-      { value: "no", text: "Recojo en tienda" },
-      { value: "gratis", text: "Envío Gratuito" },
-      { value: "express", text: "Express" }
+    impresion_arr: [
+      { text: "No", value: "no" },
+      { text: "1 color", value: "1" },
+      { text: "2 colores", value: "2" }
     ],
+    lados_arr: ["1", "2"],
     dlg_comprar: false
   }),
   created() {
@@ -192,8 +197,19 @@ export default {
     );
   },
   computed: {
-    usuario() {
-      return this.$store.state.usuario || {};
+    ...mapState(["usuario"]),
+    entrega_arr() {
+      let entrega_arr = [{ value: "no", text: "Recojo en tienda" }];
+
+      if (this.subtotal > 500)
+        // pedido mayor a 500
+        entrega_arr.push({ value: "gratis", text: "Envío Gratuito" });
+
+      if (tarifa[this.usuario.distrito])
+        // hay cobertura
+        entrega_arr.push({ value: "express", text: "Express" });
+
+      return entrega_arr;
     },
     subtotal() {
       let subtotal = Number(this.producto[this.cantidad]);
@@ -202,32 +218,43 @@ export default {
           this.producto[`${this.cantidad}_${this.impresion}_${this.lados}`]
         );
 
-      if (this.entrega === "express") subtotal += 10;
-
       return subtotal.toFixed(2);
     },
+    precio_entrega() {
+      let precio_entrega = 0;
+      if (this.entrega === "express")
+        precio_entrega = tarifa[this.usuario.distrito] || 0;
+
+      return precio_entrega;
+    },
     igv() {
-      let igv = this.factura ? Number(this.subtotal) * 0.18 : 0;
+      let igv = this.factura
+        ? (Number(this.subtotal) + Number(this.precio_entrega)) * 0.18
+        : 0;
+
       return igv.toFixed(2);
     },
     total() {
-      let total = Number(this.subtotal) + Number(this.igv);
+      let total =
+        Number(this.subtotal) + Number(this.precio_entrega) + Number(this.igv);
+
       return total.toFixed(2);
     },
     tiempo() {
       let tiempo = "";
       if (this.entrega === "no") {
-        tiempo = `${this.impresion === "no" ? "2" : "5"} días`;
+        tiempo = `${this.impresion === "no" ? "24 horas" : "7 días hábiles"}`;
       } else if (this.entrega === "express") {
-        tiempo = `${this.impresion === "no" ? "1" : "3"} días`;
+        tiempo = `${this.impresion === "no" ? "24 horas" : "5 días hábiles"}`;
       } else if (this.entrega === "gratis") {
-        var d = new Date();
-        let offset = Math.min(
-          (2 + 7 - d.getDay() + 2) % 7,
-          (6 + 7 - d.getDay() + 2) % 7
-        );
-        d.setDate(d.getDate() + offset);
-        return this.formatDate(d, false);
+        tiempo = "7 días hábiles";
+        // var d = new Date();
+        // let offset = Math.min(
+        //   (2 + 7 - d.getDay() + 2) % 7,
+        //   (6 + 7 - d.getDay() + 2) % 7
+        // );
+        // d.setDate(d.getDate() + offset);
+        // return this.formatDate(d, false);
       }
       return tiempo;
     }
@@ -267,7 +294,7 @@ export default {
     sendMessage() {
       let api = "https://api.whatsapp.com";
       let phone = "51991615223";
-      // let phone = "51955525493";
+      
       let text = `
       Buen dia, me llamo *${this.usuario.nombre} (Persona ${
         this.usuario.persona === "natural" ? "Natural" : "Jurídica"
@@ -302,7 +329,11 @@ export default {
           : "*Sin Factura*%0A"
       }
       Con Subtotal: *S/ ${this.subtotal}*%0A
-      ${this.entrega === "express" ? "Con Precio de Delivery: *S/ 10*%0A" : ""}
+      ${
+        this.entrega === "express"
+          ? `Con Precio de Delivery: *S/ ${this.precio_entrega}*%0A`
+          : ""
+      }
       Dando un Total: *S/ ${this.total}*%0A%0A
       Con el tiempo de entrega: *${this.tiempo}*%0A
       En el lugar de entrega: *Lugar de entrega: ${this.lugar}*%0A`;
@@ -347,7 +378,7 @@ export default {
       align-items: center;
 
       img {
-        width: 40%;
+        width: 30%;
       }
     }
   }

@@ -25,22 +25,25 @@
         :placeholder="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
         autocomplete="off"
         v-model.trim="nombre"
+        required
       />
       <input
         class="m-input"
-        type="text"
+        type="number"
         name="telefono"
         placeholder="Teléfono / Celular"
         autocomplete="off"
         v-model.trim="telefono"
+        required
       />
       <input
         class="m-input"
-        type="text"
+        type="email"
         name="correo"
         placeholder="Correo Electrónico"
         autocomplete="off"
         v-model.trim="correo"
+        required
       />
 
       <v-select
@@ -62,6 +65,7 @@
 </template>
 
 <script>
+import tarifa from "@/data/tarifa.json";
 import Alert from "@/components/Alert";
 
 export default {
@@ -70,58 +74,61 @@ export default {
     nombre: "",
     telefono: "",
     correo: "",
-    distrito: "Lima",
+    distrito: "Cercado de Lima",
     show_error: false,
     distritos: [
-      "Lima",
-      "Ancón",
-      "Ate",
-      "Barranco",
-      "Breña",
-      "Carabayllo",
-      "Chaclacayo",
-      "Chorrillos",
-      "Cieneguilla",
-      "Comas",
-      "El Agustino",
-      "Independencia",
-      "Jesús María",
-      "La Molina",
-      "La Victoria",
-      "Lince",
-      "Los Olivos",
-      "Lurigancho",
-      "Lurín",
-      "Magdalena del Mar",
-      "Miraflores",
-      "Pachacamac",
-      "Pucusuna",
-      "Pueblo Libre",
-      "Puente Piedra",
-      "Punta Hermosa",
-      "Punta Negra",
-      "Rímac",
-      "San Bartolo",
-      "San Borja",
-      "San Isidro",
-      "San Juan de Lurigancho",
-      "San Juan de Miraflores",
-      "San Luis",
-      "San Martin de Porres",
-      "San Miguel",
-      "Santa Anita",
-      "Santa María del Mar",
-      "Santa Rosa",
-      "Santiago de Surco",
-      "Surquillo",
-      "Villa El Salvador",
-      "Villa María del Triunfo"
+      // "Lima",
+      // "Ancón",
+      // "Ate",
+      // "Barranco",
+      // "Breña",
+      // "Carabayllo",
+      // "Chaclacayo",
+      // "Chorrillos",
+      // "Cieneguilla",
+      // "Comas",
+      // "El Agustino",
+      // "Independencia",
+      // "Jesús María",
+      // "La Molina",
+      // "La Victoria",
+      // "Lince",
+      // "Los Olivos",
+      // "Lurigancho",
+      // "Lurín",
+      // "Magdalena del Mar",
+      // "Miraflores",
+      // "Pachacamac",
+      // "Pucusuna",
+      // "Pueblo Libre",
+      // "Puente Piedra",
+      // "Punta Hermosa",
+      // "Punta Negra",
+      // "Rímac",
+      // "San Bartolo",
+      // "San Borja",
+      // "San Isidro",
+      // "San Juan de Lurigancho",
+      // "San Juan de Miraflores",
+      // "San Luis",
+      // "San Martin de Porres",
+      // "San Miguel",
+      // "Santa Anita",
+      // "Santa María del Mar",
+      // "Santa Rosa",
+      // "Santiago de Surco",
+      // "Surquillo",
+      // "Villa El Salvador",
+      // "Villa María del Triunfo"
     ]
   }),
+  created() {
+    this.distritos = Object.keys(tarifa);
+  },
   methods: {
     checkForm() {
       this.show_error = false;
-
+      
       if (
         this.persona &&
         this.nombre &&
@@ -136,6 +143,7 @@ export default {
           correo: this.correo,
           distrito: this.distrito
         });
+
         this.$router.push({ name: "catalogo" });
         return;
       }
@@ -203,7 +211,7 @@ export default {
     }
   }
 
-  input[type="text"] {
+  input {
     margin-top: 20px;
   }
 
@@ -222,5 +230,17 @@ export default {
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 20px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

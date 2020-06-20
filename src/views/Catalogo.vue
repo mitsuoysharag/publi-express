@@ -27,10 +27,7 @@
           >{{`${producto.ancho} x ${producto.base} x ${producto.alto}`}}</span>
         </div>
         <div class="producto__img">
-          <img
-            src="https://dhb3yazwboecu.cloudfront.net/512/2016/bolsa-kraft-asa-plana-32x13x41-medidas.jpg"
-            alt
-          />
+          <img :src="`http://publiexpress.pe/cotizaciones/${producto.id}.jpeg`" :alt="producto.id" />
         </div>
       </section>
     </section>
@@ -142,8 +139,5 @@ export default {
 }
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
-  .catalogo {
-    grid-template-columns: 1fr;
-  }
 }
 </style>
