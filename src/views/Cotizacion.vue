@@ -340,7 +340,8 @@ export default {
         this.entrega === "no"
           ? `En el lugar de recojo: *Av. Precursores 966, San Miguel*%0A`
           : `En el lugar de entrega: *${this.lugar}*%0A`
-      }`;
+      }
+      Distrito: *${this.usuario.distrito}*%0A`;
 
       text = text.replace(/\s+/g, " ");
 
