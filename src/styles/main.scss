@@ -10,27 +10,39 @@ body, body * {
   font-family: Lato, Arial, Helvetica, sans-serif;
 }
 
-.m-input {
-  width: 100%;
-  padding: 6px 12px;
-  background: transparent;
-  color: #ffffff;
-  font-size: 1rem;
-  text-align: center;
-  border: none;
-  border-bottom: 1px solid #ccc;
+// .m-input {
+//   width: 100%;
+//   padding: 6px 12px;
+//   background: transparent;
+//   color: #ffffff;
+//   font-size: 1rem;
+//   text-align: center;
+//   border: none;
+//   border-bottom: 1px solid #ccc;
 
-  // -webkit-box-sizing: border-box;
-  // -moz-box-sizing: border-box;
-  box-sizing: border-box;
+//   // -webkit-box-sizing: border-box;
+//   // -moz-box-sizing: border-box;
+//   box-sizing: border-box;
 
-  &:focus {
-    outline: none;
-  }
-}
+//   &:focus {
+//     outline: none;
+//   }
+// }
 
 input[type='radio'] {
   background-color: $color-secondary;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 select {
@@ -69,28 +81,21 @@ table {
   }
 }
 
+// Vuetify
+.text-field {
+  width: 100%;
+  label {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+  input {
+    text-align: center !important;
+  }
+}
 
-// // Medium devices (tablets, 768px and up)
-// @media (max-width: 1200px) {
-//   html {
-
-//   }
-// }
-// // Medium devices (tablets, 768px and up)
-// @media (max-width: 992px) {
-//   html {
-
-//   }
-// }
-// // Medium devices (tablets, 768px and up)
-// @media (max-width: 768px) {
-//   html, * {
-//     font-size: 12px;
-//   }
-// }
-// // Small devices (landscape phones, 576px and up)
-// @media (max-width: 576px) {
-//   html {
-//     font-size: 75%
-//   }
-// }
+.v-select__selection {
+  padding-left: 58px;
+  width: 100%;
+  text-align: center;
+}

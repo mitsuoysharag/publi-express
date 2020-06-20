@@ -4,7 +4,7 @@
     <Alert v-model="show_error" style="margin-bottom: 20px">Complete el formulario</Alert>
     <p class="login__message">Identifícate</p>
 
-    <form class="form" @submit.prevent="checkForm">
+    <v-form ref="form" class="form" @submit.prevent="checkForm">
       <div class="form__persona">
         <label>
           <input type="radio" name="persona" value="natural" v-model="persona" />
@@ -17,42 +17,34 @@
           <span>Empresa</span>
         </label>
       </div>
-
-      <input
-        class="m-input"
-        type="text"
-        name="nombre"
-        autocomplete="off"
+      <v-text-field
+        class="text-field"
         v-model.trim="nombre"
-        :placeholder="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
-        required
-      />
-      <!-- <v-text-field
-        style="width: 100%"
-        v-model.trim="nombre"
+        :rules="[rules.required]"
         :label="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
         autocomplete="off"
         required
         dark
-      ></v-text-field> -->
-      <input
-        class="m-input"
+      ></v-text-field>
+      <v-text-field
+        class="text-field"
         type="number"
-        name="telefono"
-        placeholder="Teléfono / Celular"
-        autocomplete="off"
         v-model.trim="telefono"
-        required
-      />
-      <input
-        class="m-input"
-        type="email"
-        name="correo"
-        placeholder="Correo Electrónico"
+        :rules="[rules.required]"
+        label="Teléfono / Celular"
         autocomplete="off"
-        v-model.trim="correo"
         required
-      />
+        dark
+      ></v-text-field>
+      <v-text-field
+        class="text-field"
+        v-model.trim="correo"
+        :rules="[rules.required, rules.email]"
+        label="Correo Electrónico"
+        autocomplete="off"
+        required
+        dark
+      ></v-text-field>
 
       <v-select
         style="width: 100%; margin-top: 12px"
@@ -64,7 +56,7 @@
       ></v-select>
 
       <button class="btn-submit">Ingresar</button>
-    </form>
+    </v-form>
 
     <p
       class="login__nota"
@@ -128,7 +120,14 @@ export default {
       // "Surquillo",
       // "Villa El Salvador",
       // "Villa María del Triunfo"
-    ]
+    ],
+    rules: {
+      required: value => !!value || "Requerido.",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Correo Inválido.";
+      }
+    }
   }),
   created() {
     this.distritos = Object.keys(tarifa);
@@ -137,13 +136,7 @@ export default {
     checkForm() {
       this.show_error = false;
 
-      if (
-        this.persona &&
-        this.nombre &&
-        this.telefono &&
-        this.correo &&
-        this.distrito
-      ) {
+      if (this.$refs.form.validate()) {
         this.$store.commit("setUsuario", {
           persona: this.persona,
           nombre: this.nombre,
@@ -157,12 +150,6 @@ export default {
       }
 
       this.show_error = true;
-
-      // this.errors = [];
-      // if (!this.nombre) this.errors.push("");
-      // if (!this.telefono) this.errors.push("");
-      // if (!this.correo) this.errors.push("");
-      // if (!this.distrito) this.errors.push("");
     }
   },
   components: {
@@ -210,6 +197,7 @@ export default {
   align-items: center;
 
   &__persona {
+    margin-bottom: 20px;
     display: flex;
     label {
       margin: 0 12px;
@@ -238,17 +226,5 @@ export default {
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 20px;
-}
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
 }
 </style>
