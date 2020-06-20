@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang=es><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.ico><title>publi-express</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css><link href=/css/chunk-b55b26ac.b92aab30.css rel=prefetch><link href=/css/chunk-cf67afc2.51c026a9.css rel=prefetch><link href=/js/chunk-b55b26ac.2bf2d9df.js rel=prefetch><link href=/js/chunk-cf67afc2.fdfd5fd7.js rel=prefetch><link href=/css/app.5fd7d4ea.css rel=preload as=style><link href=/css/chunk-vendors.2027b187.css rel=preload as=style><link href=/js/app.216b58fa.js rel=preload as=script><link href=/js/chunk-vendors.21dd09e2.js rel=preload as=script><link href=/css/chunk-vendors.2027b187.css rel=stylesheet><link href=/css/app.5fd7d4ea.css rel=stylesheet></head><body><noscript><strong>We're sorry but publi-express doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script>window.onload = (e) => {
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+      });
+      // Show the prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice
+        .then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+    }</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-170090531-1"></script><script>window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170090531-1');</script><script>!function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '680667769156726');
+    fbq('track', 'PageView');</script><noscript><img height=1 width=1 style=display:none src="https://www.facebook.com/tr?id=680667769156726&ev=PageView&noscript=1"></noscript><script src=/js/chunk-vendors.21dd09e2.js></script><script src=/js/app.216b58fa.js></script></body></html>
