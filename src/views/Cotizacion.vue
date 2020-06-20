@@ -8,7 +8,7 @@
     <div class="row no-gutters" style="align-items: center">
       <div class="col-md-4">
         <div class="cotizacion__img">
-          <img :src="`http://publiexpress.pe/cotizaciones/${producto.id}.jpeg`" :alt='producto.id' />
+          <img :src="`http://publiexpress.pe/cotizaciones/${producto.id}.jpeg`" :alt="producto.id" />
           <div class="overlay">
             <img v-if="img" :src="img" alt="Imagen" />
           </div>
@@ -225,7 +225,7 @@ export default {
       if (this.entrega === "express")
         precio_entrega = tarifa[this.usuario.distrito] || 0;
 
-      return precio_entrega;
+      return precio_entrega.toFixed(2);
     },
     igv() {
       let igv = this.factura
@@ -294,7 +294,7 @@ export default {
     sendMessage() {
       let api = "https://api.whatsapp.com";
       let phone = "51991615223";
-      
+
       let text = `
       Buen dia, me llamo *${this.usuario.nombre} (Persona ${
         this.usuario.persona === "natural" ? "Natural" : "Jurídica"
@@ -336,7 +336,12 @@ export default {
       }
       Dando un Total: *S/ ${this.total}*%0A%0A
       Con el tiempo de entrega: *${this.tiempo}*%0A
-      En el lugar de entrega: *Lugar de entrega: ${this.lugar}*%0A`;
+      ${
+        this.entrega === "no"
+          ? `En el lugar de recojo: *Av. Precursores 966, San Miguel*%0A`
+          : `En el lugar de entrega: *${this.lugar}*%0A`
+      }`;
+
       text = text.replace(/\s+/g, " ");
 
       window.open(`${api}/send?phone=${phone}&text=${text}`, "_blank");

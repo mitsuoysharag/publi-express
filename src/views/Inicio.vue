@@ -22,11 +22,19 @@
         class="m-input"
         type="text"
         name="nombre"
-        :placeholder="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
         autocomplete="off"
         v-model.trim="nombre"
+        :placeholder="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
         required
       />
+      <!-- <v-text-field
+        style="width: 100%"
+        v-model.trim="nombre"
+        :label="persona === 'natural' ? 'Nombre de contacto': 'Razón Social'"
+        autocomplete="off"
+        required
+        dark
+      ></v-text-field> -->
       <input
         class="m-input"
         type="number"
@@ -128,7 +136,7 @@ export default {
   methods: {
     checkForm() {
       this.show_error = false;
-      
+
       if (
         this.persona &&
         this.nombre &&
@@ -240,7 +248,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>
